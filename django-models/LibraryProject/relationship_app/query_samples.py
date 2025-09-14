@@ -10,7 +10,7 @@ def books_in_library(library_name):
     library = Library.objects.get(name=library_name)
     return library.books.all()
 
-librarian_for_library = Librarian.objects.get(library__name="Central Library")
+librarian_for_library = Librarian.objects.get(library="Central Library")
 
 # 3. Retrieve the librarian for a library
 def librarian_for_library(library_name):
