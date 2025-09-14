@@ -92,25 +92,40 @@ def add_book(request):
     return render(request, "relationship_app/add_book.html", {"authors": authors})
 
 
-# Edit book (requires can_change_book)
-@permission_required("relationship_app.can_change_book")
-def edit_book(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    if request.method == "POST":
-        book.title = request.POST.get("title")
-        author_id = request.POST.get("author")
-        book.author = Author.objects.get(id=author_id)
+
+
+
+
+
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render, redirect
+from .models import Book
+
+@permission_required('relationship_app.can_view', raise_exception=True)
+def view_books(request):
+    books = Book.objects.all()
+    return render(request, 'relationship_app/list_books.html', {'books': books})
+
+@permission_required('relationship_app.can_create', raise_exception=True)
+def create_book(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author_id = request.POST.get('author')
+        Book.objects.create(title=title, author_id=author_id)
+        return redirect('view_books')
+    return render(request, 'relationship_app/create_book.html')
+
+@permission_required('relationship_app.can_edit', raise_exception=True)
+def edit_book(request, book_id):
+    book = Book.objects.get(pk=book_id)
+    if request.method == 'POST':
+        book.title = request.POST.get('title')
         book.save()
-        return redirect("list_books")
-    authors = Author.objects.all()
-    return render(request, "relationship_app/edit_book.html", {"book": book, "authors": authors})
+        return redirect('view_books')
+    return render(request, 'relationship_app/edit_book.html', {'book': book})
 
-
-# Delete book (requires can_delete_book)
-@permission_required("relationship_app.can_delete_book")
-def delete_book(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    if request.method == "POST":
-        book.delete()
-        return redirect("list_books")
-    return render(request, "relationship_app/delete_book.html", {"book": book})
+@permission_required('relationship_app.can_delete', raise_exception=True)
+def delete_book(request, book_id):
+    book = Book.objects.get(pk=book_id)
+    book.delete()
+    return redirect('view_books')

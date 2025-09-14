@@ -125,3 +125,48 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+AUTH_USER_MODEL = "bookshelf.CustomUser"
+
+# Turn off debug in production
+DEBUG = False
+
+# Security headers for XSS, clickjacking, and MIME type sniffing
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Force cookies to be sent only over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Recommended additional security settings
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
+CSRF_COOKIE_HTTPONLY = True  # CSRF cookie not accessible via JS
+SESSION_COOKIE_HTTPONLY = True  # Session cookie not accessible via JS
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # Instruct browsers to access site via HTTPS for 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow site to be included in browser preload list
+# Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = True  # Ensures all requests use HTTPS
+
+# Ensure cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Additional protection
+SESSION_COOKIE_HTTPONLY = True  # Prevent JS access to session cookie
+CSRF_COOKIE_HTTPONLY = True     # Prevent JS access to CSRF cookie
+
+# Prevent clickjacking
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent MIME-type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser XSS protection
+SECURE_BROWSER_XSS_FILTER = True
+
+
+
