@@ -17,4 +17,3 @@ urlpatterns = [
     path("member-role/", views.member_view, name="member_view"),
 
 ]
-
